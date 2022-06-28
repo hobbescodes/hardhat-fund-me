@@ -45,12 +45,12 @@ describe("FundMe", () => {
         })
     })
 
-    describe("withdraw", () => {
+    describe("cheaperWithdraw", () => {
         beforeEach(async () => {
             await fundMe.fund({ value: sendValue })
         })
 
-        it("can withdraw eth from a single funder", async () => {
+        it("can cheaperWithdraw eth from a single funder", async () => {
             // Arrange
             const startingFundMeBalance = await fundMe.provider.getBalance(
                 fundMe.address
@@ -59,7 +59,7 @@ describe("FundMe", () => {
                 deployer
             )
             // Act
-            const transactionResponse = await fundMe.withdraw()
+            const transactionResponse = await fundMe.cheaperWithdraw()
             const transactionReceipt = await transactionResponse.wait()
 
             // to find gas variables, at breakpoint, go to run & debug -> JavaScript Debug Terminal -> yarn hardhat test
@@ -83,7 +83,7 @@ describe("FundMe", () => {
             )
         })
 
-        it("allows us to withdraw with multiple funders", async () => {
+        it("allows us to cheaperWithdraw with multiple funders", async () => {
             const accounts = await ethers.getSigners()
 
             // start with index 1 because index 0 is the deployer
@@ -101,7 +101,7 @@ describe("FundMe", () => {
                 deployer
             )
 
-            const transactionResponse = await fundMe.withdraw()
+            const transactionResponse = await fundMe.cheaperWithdraw()
             const transactionReceipt = await transactionResponse.wait()
             const { gasUsed, effectiveGasPrice } = transactionReceipt
             const gasCost = gasUsed.mul(effectiveGasPrice)
@@ -131,12 +131,12 @@ describe("FundMe", () => {
             }
         })
 
-        it("only allows the owner to withdraw", async () => {
+        it("only allows the owner to cheaperWithdraw", async () => {
             const accounts = await ethers.getSigners()
             const attacker = accounts[1]
             const attackerConnectedContract = await fundMe.connect(attacker)
             await expect(
-                attackerConnectedContract.withdraw()
+                attackerConnectedContract.cheaperWithdraw()
             ).to.be.revertedWith("FundMe__NotOwner()")
         })
     })
