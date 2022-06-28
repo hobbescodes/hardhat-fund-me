@@ -12,10 +12,10 @@ contract FundMe {
 
     //State variables
     uint256 public constant MINIMUM_USD = 50 * 10**18;
-    address public immutable i_owner;
-    address[] public s_funders;
-    mapping(address => uint256) public s_addressToAmountFunded;
-    AggregatorV3Interface public s_priceFeed;
+    address private immutable i_owner;
+    address[] private s_funders;
+    mapping(address => uint256) private s_addressToAmountFunded;
+    AggregatorV3Interface private s_priceFeed;
 
     //Events
 
@@ -90,10 +90,6 @@ contract FundMe {
         returns (uint256)
     {
         return s_addressToAmountFunded[fundingAddress];
-    }
-
-    function getVersion() public view returns (uint256) {
-        return s_priceFeed.version();
     }
 
     function getFunder(uint256 index) public view returns (address) {
